@@ -63,6 +63,19 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                StreamBuilder(
+                  stream: Supabase.instance.client
+                      .from('notifications')
+                      .stream(primaryKey: ['id'])
+                      .eq('employee_id', '0a6ce416-af8d-4881-bfdc-7ecee3da2bd8'),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(snapshot.data!.length.toString());
+                    } else {
+                      return const Text('No data');
+                    }
+                  }
+                ),
                 const Text(
                   'Number of Notifications:',
                 ),
