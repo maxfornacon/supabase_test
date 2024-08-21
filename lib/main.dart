@@ -4,6 +4,7 @@ import 'package:stacked/stacked.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supabase_test/services/service_locator.dart';
 import 'package:supabase_test/view_models/home_viewmodel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,6 +50,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var channel = Supabase.instance.client
+        .channel('notifications')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.all,
+          schema: 'a_testtenant',
+          table: 'notifications',
+          callback: (payload) {
+            print('Change received: ${payload.toString()}');
+            if (payload.errors != null && payload.errors.isNotEmpty) {
+              payload.errors.forEach((element) {
+                print('Error: ${element.message}');
+              });
+            }
+          },
+        )
+        .subscribe();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,13 +89,17 @@ class _MyHomePageState extends State<MyHomePage> {
               children: <Widget>[
                 StreamBuilder(
                   stream: Supabase.instance.client
+                      .schema('a_testtenant')
                       .from('notifications')
                       .stream(primaryKey: ['id'])
-                      .eq('employee_id', '0a6ce416-af8d-4881-bfdc-7ecee3da2bd8'),
+                      .eq('employee_id', '9418ce33-6349-45aa-895e-78e4423155dc'),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Text(snapshot.data!.length.toString());
                     } else {
+                      if (snapshot.error != null) {
+                        print('ERRROR: ${snapshot.error.toString()}');
+                      }
                       return const Text('No data');
                     }
                   }

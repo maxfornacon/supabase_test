@@ -12,7 +12,7 @@ class NotificationsService {
   final supabaseApi = locator.get<SupabaseApi>();
 
   Future<void> initStream() async {
-    supabaseApi.getNotificationsStream(userId: '0a6ce416-af8d-4881-bfdc-7ecee3da2bd8').listen((documents) async {
+    supabaseApi.getNotificationsStream(userId: '9418ce33-6349-45aa-895e-78e4423155dc').listen((documents) async {
       _notifications.add(documents);
     });
   }

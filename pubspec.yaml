@@ -10,17 +10,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.6
-  supabase_flutter: ^1.10.19
+  cupertino_icons: ^1.0.8
+  supabase_flutter:
+    path: /Users/maximilianfornacon/projects/supabase/supabase-flutter/packages/supabase_flutter
   flutter_dotenv: ^5.1.0
   get_it: ^7.6.4
   stacked: ^3.4.1
+  url_launcher:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true

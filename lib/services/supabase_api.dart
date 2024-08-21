@@ -12,6 +12,7 @@ class SupabaseApi {
     required String userId
   }) {
     return supabase
+      .schema('a_testtenant')
       .from('notifications')
       .stream(primaryKey: ['id'])
       .eq('employee_id', userId);
